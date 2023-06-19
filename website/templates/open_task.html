@@ -1,0 +1,39 @@
+<div class="sales">
+    <span class="material-icons-sharp">file_open</span>
+    <div class="middle">
+        <div class="left">
+            <h2>Open tasks</h2>
+
+            {% for t in tasks%}
+
+            <p>task: {{t.ongoing_task}}</p>
+            <p>created : {{t.date_created.strftime('%m/%d/%Y %I:%M %p')}}</p>
+            <p>created by: {{t.user.username}}</p>
+            {% if current_user.id==t.operator %}
+            {%endif%}
+            {%endfor%}
+        </div>
+        <div class="progres">
+            <svg>
+                <circle class="progress" cx="38" cy="38" r="36">
+                </circle>
+            </svg>
+
+            <div class=" number">
+                <p>{{task_percent}}%</p>
+            </div>
+        </div>
+    </div>
+    <small class="text-muted"> Last 24 hours </small>
+</div>
+<script>
+    let progressCircle = document.querySelector(".progress");
+    let radius = progressCircle.r.baseVal.value;
+    let circumference = radius * 2 * Math.PI;
+    progressCircle.style.strokeDasharray = circumference;
+    function setProgress(percent) {
+        progressCircle.style.strokeDashoffset =
+            circumference - (percent / 100) * circumference;
+    }
+    setProgress("{{task_percent}}")
+</script>
